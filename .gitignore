@@ -7,7 +7,8 @@ __pycache__/
 *.so
 
 # Data Files
-datasets/*
+datasets/urldata_ewentualność.csv
+datasets/malicious_phish.csv
 # Chromedriver
 chromedriver.exe
 
