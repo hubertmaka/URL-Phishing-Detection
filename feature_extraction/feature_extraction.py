@@ -35,3 +35,7 @@ class FeatureExtraction:
 
     def urlLongerThan(self, comp_len: int) -> bool:
         return True if len(self.url) > comp_len else False
+
+    @property
+    def urlDepth(self):
+        return sum(self.url.split('/')[2:])

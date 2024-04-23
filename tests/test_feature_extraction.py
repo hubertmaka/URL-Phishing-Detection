@@ -65,3 +65,10 @@ class TestFeatureExtraction(unittest.TestCase):
     def testGivenProperUrlWhenCreatingObjectThenReturnTrue(self):
         self.assertTrue(fe.FeatureExtraction.isUrlProper('https://mysite.pl'))
 
+    def testGivenLongerUrlWhenCheckIfUrlLongerThanThresholdThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://wp.pl')
+        self.assertTrue(fe1.urlLongerThan(12))
+
+    def testGivenNotLongerUrlWhenCheckIfUrlLongerThanThresholdThenReturnFalse(self):
+        fe1 = fe.FeatureExtraction('https://wp.pl')
+        self.assertFalse(fe1.urlLongerThan(13))
