@@ -7,6 +7,15 @@ class FeatureExtraction:
         if self.isUrlProper(url):
             self.url = url.strip()
 
+        self.possibleCharacters = [
+            '!', '@', '#', '$', '%',
+            '^', '&', '*', '(', ')',
+            '{', '}', '[', ']', '~',
+            '`', ':', ';', '|', '\\',
+            ',', '.', '<', '>', '?',
+            '/', '+', '=', '-', '_'
+        ]
+
     def haveAtSign(self) -> bool:
         return True if '@' in self.url else False
 
@@ -39,3 +48,14 @@ class FeatureExtraction:
     @property
     def urlDepth(self):
         return sum(self.url.split('/')[2:])
+
+    def countCharacters(self):
+        charCounts: dict[str: int] = {}
+        for ch in self.possibleCharacters:
+            charCounts[ch] = self.url.count(ch)
+        return charCounts
+
+    def haveHttps(self):
+        return True if self.url.startswith('https') else False
+
+

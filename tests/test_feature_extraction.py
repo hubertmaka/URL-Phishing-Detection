@@ -72,3 +72,48 @@ class TestFeatureExtraction(unittest.TestCase):
     def testGivenNotLongerUrlWhenCheckIfUrlLongerThanThresholdThenReturnFalse(self):
         fe1 = fe.FeatureExtraction('https://wp.pl')
         self.assertFalse(fe1.urlLongerThan(13))
+
+    def testGivenUrlWithCharsWhenCountCharsThenReturnDictWithCountedChars(self):
+        fe1 = fe.FeatureExtraction('htt()p://all@egr$0lo?ka>ln^ie.8347**3636.xyz/fb7pl5qw/;\'\\{}#some-file?%param=abc')
+        properResult = {
+            '!': 0, '@': 1, '#': 1,
+            '$': 1, '%': 1, '^': 1,
+            '&': 0, '*': 2, '(': 1,
+            ')': 1, '{': 1, '}': 1,
+            '[': 0, ']': 0, '~': 0,
+            '`': 0, ':': 1, ';': 1,
+            '|': 0, '\\': 1, ',': 0,
+            '.': 2, '<': 0, '>': 1,
+            '?': 2, '/': 4, '+': 0,
+            '=': 1, '-': 1, '_': 0
+        }
+        self.assertEqual(fe1.countCharacters(), properResult)
+
+    def testGivenEmptyStrWhenCountCharsThenCountAllZeroChars(self):
+        fe1 = fe.FeatureExtraction('')
+        properResult = {
+            '!': 0, '@': 0, '#': 0,
+            '$': 0, '%': 0, '^': 0,
+            '&': 0, '*': 0, '(': 0,
+            ')': 0, '{': 0, '}': 0,
+            '[': 0, ']': 0, '~': 0,
+            '`': 0, ':': 0, ';': 0,
+            '|': 0, '\\': 0, ',': 0,
+            '.': 0, '<': 0, '>': 0,
+            '?': 0, '/': 0, '+': 0,
+            '=': 0, '-': 0, '_': 0
+        }
+        self.assertEqual(fe1.countCharacters(), properResult)
+
+    def testGivenUrlStartsWithHTTPSWhenCheckIfStartWithHTTPSThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://onet.pl')
+        self.assertTrue(fe1.haveHttps())
+
+    def testGivenUrlNotStartsWithHTTPSWhenCheckIfStartWithHTTPSThenReturnFalse(self):
+        fe1 = fe.FeatureExtraction('http://onet.pl')
+        self.assertFalse(fe1.haveHttps())
+
+    def testGivenUrlWithSequenceHTTPSInsideWhenCheckIfStartWithHTTPSThenReturnFalse(self):
+        fe1 = fe.FeatureExtraction('//onet.https.pl')
+        self.assertFalse(fe1.haveHttps())
+
