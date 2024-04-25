@@ -1,6 +1,6 @@
 import ipaddress
 import unittest
-
+from urllib.parse import urlparse
 import feature_extraction as fe
 
 
@@ -117,27 +117,23 @@ class TestFeatureExtraction(unittest.TestCase):
         self.assertFalse(fe1.have_https())
 
     def testGivenUrlWhenExtractParametersThenReturnProper(self):
-        fe1 = fe.FeatureExtraction('https://docs.python.org:443/3/library/urllib.parse.html?highlight=params#url-parsing')
-        print(fe1._extract_url_params())
+        fe1 = fe.FeatureExtraction('https://python.org:443/3/library/urllib.html?highlight=params#url')
+        self.assertEqual(fe1.url_params, urlparse('https://python.org:443/3/library/urllib.html?highlight=params#url'))
 
     def testGivenUrlWhenAbnormalNoSchemaNoNetlocUrlThenReturnTrue(self):
         fe1 = fe.FeatureExtraction('garage-pirenne.be/index.php?option=com_')
-        print(fe1._extract_url_params())
         self.assertTrue(fe1.abnormal_url)
 
     def testGivenUrlWhenAbnormalNoNetlocUrlThenReturnTrue(self):
         fe1 = fe.FeatureExtraction('https:/index.php?option=com_')
-        print(fe1._extract_url_params())
         self.assertTrue(fe1.abnormal_url)
 
     def testGivenUrlWhenAbnormalNoSchemaUrlThenReturnTrue(self):
         fe1 = fe.FeatureExtraction('://avc/index.php?option=com_')
-        print(fe1._extract_url_params())
         self.assertTrue(fe1.abnormal_url)
 
     def testGivenUrlWhenNotAbnormalThenReturnTrue(self):
         fe1 = fe.FeatureExtraction('https://docs.python.org:443/3/library/urllib.parse.html?highlight=params#url-parsing')
-        print(fe1._extract_url_params())
         self.assertFalse(fe1.abnormal_url)
 
     def testGivenUrlWhenCountZeroDigitsInUrlThenReturnZero(self):
@@ -156,7 +152,21 @@ class TestFeatureExtraction(unittest.TestCase):
         fe1 = fe.FeatureExtraction('https://wp.pl/65345::////13123')
         self.assertEqual(fe1.count_letters(), 9)
 
+    def testGivenPathWhenCountDepthNonZeroThenReturnNumberOfSlashes(self):
+        fe1 = fe.FeatureExtraction('https://wp.pl/65345/abcd/ab;cd/?param1=ddd')
+        self.assertEqual(fe1.path_depth(), 4)
 
+    def testGivenPathWhenCountDepthZeroThenReturnZero(self):
+        fe1 = fe.FeatureExtraction('https://wp.pl?param=ddd')
+        self.assertEqual(fe1.path_depth(), 0)
+
+    def testGivenNetlocWhenCountDotsNonZeroThenReturnNumberOfDots(self):
+        fe1 = fe.FeatureExtraction('https://www.google.com/abc.com')
+        self.assertEqual(fe1.dots_in_netloc(), 2)
+
+    def testGivenNetlocWhenCountDotsZeroDotsThenReturnZEro(self):
+        fe1 = fe.FeatureExtraction('https:///abc.com')
+        self.assertEqual(fe1.dots_in_netloc(), 0)
     # def testGivenUrlWhenCheckUrlDepthThenReturnUrlDepth(self):
     #     fe1 = fe.FeatureExtraction('//onet.https.pl')
     #     print(fe1.url_depth)
