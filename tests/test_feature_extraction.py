@@ -167,6 +167,39 @@ class TestFeatureExtraction(unittest.TestCase):
     def testGivenNetlocWhenCountDotsZeroDotsThenReturnZEro(self):
         fe1 = fe.FeatureExtraction('https:///abc.com')
         self.assertEqual(fe1.dots_in_netloc(), 0)
-    # def testGivenUrlWhenCheckUrlDepthThenReturnUrlDepth(self):
-    #     fe1 = fe.FeatureExtraction('//onet.https.pl')
-    #     print(fe1.url_depth)
+
+    def testGivenShortDomainsWhenGenerateShortDomainsPatternThenReturnPattern(self):
+        fe1 = fe.FeatureExtraction('')
+        self.assertEqual(fe1.generate_shortening_regex(), 'https?://(www\.)?(bit.ly|goo.gl|tinyurl.com|t.co|ow.ly|is.gd|shorte.st|adf.ly|bc.vc|cli.gs|cutt.us|u.to|j.mp|v.gd|qr.ae|tr.im|prettylinkpro.com|yourls.org|slink.be|scrnch.me|filoops.info|vzturl.com|x.co|zzb.bz|1url.com|tweez.me|v.tl|lnkd.in|dft.ba|yep.it|hurl.me|url.ie|link.zip.net|cort.as|po.st|4sq.com|1u.bb|awk.fr|buzurl.com|cutt.ly|t2m.io|waa.ai|get.shorty|tiny.cc|short.to|snip.ly|pt.link|cl.lk|soo.gd|ity.im|yfrog.com|twitthis.com|u.nu|plurl.me|urlx.ie|poprl.com|to.ly|bit.do|rb.gy|shorturl.at|clicky.me|budurl.com|trim.li|qr.net|url.kz|ur2.me|2.tu|zpag.es|xlink.me|goshrink.com|picz.us|tinyarrows.net|chilp.it|nanoref.com|notlong.com|post.ly|xrl.us|url4.eu|virl.ws|migre.me|buk.me|cuturls.com|fun.ly|snipurl.com|golinks.co|viralurl.biz|twurl.nl|merky.de)')
+
+    def testGivenBitlyUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://bit.ly/3uQFzJq')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenTinyUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://tinyurl.com/yz3u9j2a')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenGoogleUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://goo.gl/maps/abc123')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenTwitterUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://t.co/ABCD1234')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenOwlyUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://ow.ly/xYzA1')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenTinyCCUrlWhenMatchesPatternThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://tiny.cc/abc123')
+        self.assertTrue(fe1.have_shortening_patterns())
+
+    def testGivenUrlWithScriptWhenCheckIfJavaScriptInUrlThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://code.jquery.com/jquery-3<script>alert("Hello")</script>')
+        self.assertTrue(fe1.have_javascript_code())
+
+    def testGivenUrlWithoutScriptWhenCheckIfJavaScriptInUrlThenReturnFalse(self):
+        fe1 = fe.FeatureExtraction('https://code.jquery.com/jquery-3alert("Hello")')
+        self.assertFalse(fe1.have_javascript_code())

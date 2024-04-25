@@ -1,7 +1,9 @@
 import ipaddress
 import re
+
 from urllib.parse import urlparse, ParseResult
 from feature_extraction.exceptions import SpaceInUrlException
+from feature_extraction.utils import PatternCollector
 
 
 class FeatureExtraction:
@@ -10,14 +12,12 @@ class FeatureExtraction:
             self.url: str = url.strip()
 
         self.url_params: ParseResult = urlparse(self.url)
-        self.possible_characters = [
-            '!', '@', '#', '$', '%',
-            '^', '&', '*', '(', ')',
-            '{', '}', '[', ']', '~',
-            '`', ':', ';', '|', '\\',
-            ',', '.', '<', '>', '?',
-            '/', '+', '=', '-', '_'
-        ]
+        self._possible_characters = PatternCollector().chars
+        self._short_domains = PatternCollector().short_domains
+        self._shortening_pattern = self.generate_shortening_regex()
+
+    def generate_shortening_regex(self):
+        return f"https?://(www\.)?({'|'.join(self._short_domains)})"
 
     def have_at_sign(self) -> bool:
         return True if '@' in self.url else False
@@ -49,7 +49,7 @@ class FeatureExtraction:
         return True if len(self.url) > comp_len else False
 
     def count_characters(self) -> dict[str: int]:
-        return {ch: self.url.count(ch) for ch in self.possible_characters}
+        return {ch: self.url.count(ch) for ch in self._possible_characters}
 
     def have_https(self) -> bool:
         return True if self.url.startswith('https') else False
@@ -71,5 +71,11 @@ class FeatureExtraction:
     def dots_in_netloc(self) -> int:
         return self.url_params.netloc.count('.')
 
+    def have_shortening_patterns(self) -> bool:
+        return bool(re.match(self._shortening_pattern, self.url))
 
-    # TODO: shortening patterns, javascript in url
+    def have_javascript_code(self) -> bool:
+        return True if bool(re.findall(re.compile('<script>'), self.url)) else False
+
+
+
