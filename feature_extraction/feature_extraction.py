@@ -8,22 +8,19 @@ from feature_extraction.utils import PatternCollector
 
 class FeatureExtraction:
     def __init__(self, url: str) -> None:
-        if self.is_url_proper(url):
+        if self._is_url_proper(url):
             self.url: str = url.strip()
 
         self.url_params: ParseResult = urlparse(self.url)
         self._possible_characters = PatternCollector().chars
         self._short_domains = PatternCollector().short_domains
-        self._shortening_pattern = self.generate_shortening_regex()
+        self._shortening_pattern = self._generate_shortening_regex()
 
-    def generate_shortening_regex(self):
+    def _generate_shortening_regex(self):
         return f"https?://(www\.)?({'|'.join(self._short_domains)})"
 
-    def have_at_sign(self) -> bool:
-        return True if '@' in self.url else False
-
     @staticmethod
-    def is_url_proper(url: str) -> bool:
+    def _is_url_proper(url: str) -> bool:
         url.strip()
         if ' ' in url:
             raise SpaceInUrlException("URL cannot have space between words", url)
@@ -33,6 +30,9 @@ class FeatureExtraction:
     @staticmethod
     def _extract_ip_address(url) -> str:
         return url.split('/')[2].lstrip('[').rstrip(']')
+
+    def have_at_sign(self) -> bool:
+        return True if '@' in self.url else False
 
     def have_ip_address(self) -> bool:
         try:
