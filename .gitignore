@@ -10,7 +10,7 @@ __pycache__/
 datasets/urldata_ewentualność.csv
 datasets/malicious_phish.csv
 # Chromedriver
-chromedriver.exe
+automation_utils/chromedriver.exe
 
 # Distribution / packaging
 .Python

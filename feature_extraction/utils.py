@@ -1,6 +1,10 @@
-
-
 class PatternCollector:
+    """Collects patterns for feature extraction.
+
+    Attributes:
+        chars (list): List of special characters to count in URLs.
+        short_domains (list): List of short domain patterns to check in URLs.
+    """
 
     chars = [
         '!', '@', '#', '$', '%',
@@ -23,9 +27,3 @@ class PatternCollector:
         'chilp.it', 'nanoref.com', 'notlong.com', 'post.ly', 'xrl.us', 'url4.eu', 'virl.ws', 'migre.me',
         'buk.me', 'cuturls.com', 'fun.ly', 'snipurl.com', 'golinks.co', 'viralurl.biz', 'twurl.nl', 'merky.de'
     ]
-
-
-
-
-
-
