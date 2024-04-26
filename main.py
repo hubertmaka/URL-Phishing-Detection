@@ -3,12 +3,14 @@ from automation_utils.download_automation_script import DownloadDataAutomationSc
 
 
 class Main:
+    MAX_PAGE = 6409
+
     @staticmethod
     def main() -> None:
         my_url = 'https://phishtank.org/phish_search.php'
-        file_to_path = 'datasets/non-phishing-urls-phishtank.csv'
-        download_manager = DownloadDataAutomationScript(my_url, file_to_path)
-        download_manager.scrap_data(0, 100)
+        path_to_non_phishing_file = 'datasets/non-phishing-urls-phishtank.csv'
+        download_manager = DownloadDataAutomationScript(my_url, path_to_non_phishing_file)
+        download_manager.scrap_data(0, Main.MAX_PAGE)
 
         fe1 = FeatureExtraction("https://en.wikipedia.org/wiki")
 

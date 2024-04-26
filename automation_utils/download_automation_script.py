@@ -34,7 +34,6 @@ class DownloadDataAutomationScript:
         with DownloadDataAutomationScriptContextManager(self.url) as inst:
             for page_nr in range(start, pages + 1):
                 web_driver = inst.get_driver()
-                print(page_nr)
                 web_driver.get(inst.set_site_url(page_nr))
                 """Wait until table loads successfully."""
                 WebDriverWait(web_driver, 10).until(
@@ -49,6 +48,7 @@ class DownloadDataAutomationScript:
                 self._extract(table_rows)
                 rows_to_write = self._zip_tables()
                 self._save_to_csv_file(rows_to_write)
+
 
     def _extract(self, table_rows: list) -> None:
         """

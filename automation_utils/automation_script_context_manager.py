@@ -16,13 +16,13 @@ class DownloadDataAutomationScriptContextManager:
 
     def __enter__(self):
         self.initiate_file()
-        return DownloadDataAutomationScriptContextManager(self.url, self.valid_data, self.start_page)
+        return DownloadDataAutomationScriptContextManager(self.url, self.valid_data)
 
     def __exit__(self):
         self.webdriver.quit()
 
     def initiate_file(self):
-        with open('datasets/non-phishing-urls-phishtank.csv', 'w', newline='') as csvfile:
+        with open('datasets/non-phishing-urls-phishtank-final.csv', 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
             csvwriter.writerow(self.title)
 
