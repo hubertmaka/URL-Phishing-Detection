@@ -8,7 +8,6 @@ __pycache__/
 
 # Data Files
 datasets/urldata_ewentualność.csv
-datasets/malicious_phish.csv
 # Chromedriver
 automation_utils/chromedriver.exe
 
