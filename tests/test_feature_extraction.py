@@ -72,9 +72,20 @@ class TestFeatureExtraction(unittest.TestCase):
         fe1 = fe.FeatureExtraction('')
         self.assertEqual(fe1.url_length, 0)
 
-    def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenRaiseException(self):
+    def testGivenUrlWhenComputeNetlocLengthThenReturnNetlocLength(self):
+        """Test if the length of the netloc is proper."""
+        fe1 = fe.FeatureExtraction('https://abc.ddd.gfdsa/myfile/co')
+        self.assertEqual(fe1.netloc_length(), 13)
+
+    def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenChangeSpacesToPluses(self):
         """Test if creating an object with a URL containing spaces raises an exception."""
-        self.assertRaises(fe.SpaceInUrlException, fe.FeatureExtraction._is_url_proper, 'https:// mysite.pl')
+        self.assertFalse(fe.FeatureExtraction._is_url_proper('https:// mysite.pl'))
+
+    def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenReturnProperUrl(self):
+        changed_url = fe.FeatureExtraction(
+            "https://'academiaquebramar.com.br/tmp/stgeorge modified/stgeorge modified/stgeorge.htm'").url
+        proper_url = "https://'academiaquebramar.com.br/tmp/stgeorge+modified/stgeorge+modified/stgeorge.htm'"
+        self.assertTrue(changed_url == proper_url)
 
     def testGivenProperUrlWhenCreatingObjectThenReturnTrue(self):
         """Test if creating an object with a proper URL returns True."""
@@ -169,10 +180,6 @@ class TestFeatureExtraction(unittest.TestCase):
         """Test if the count of digits in a URL is zero."""
         fe1 = fe.FeatureExtraction('https://docs.python.org/library/urllib.parse.html?highlight=params#url-parsing')
         self.assertEqual(fe1.count_digits(), 0)
-
-    def testGivenUrlWhenCountSomeDigitsInUrlThenReturnZero(self):
-        fe1 = fe.FeatureExtraction('https://docs.pyth57on.org:653/library/ur124llib.parse089.html?hit=params#url-1par')
-        self.assertEqual(fe1.count_digits(), 12)
 
     def testGivenUrlWhenCountSomeDigitsInUrlThenReturnZero(self):
         """Test if counting digits in a URL with digits returns the correct count."""

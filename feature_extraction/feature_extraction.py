@@ -16,6 +16,8 @@ class FeatureExtraction:
         """
         if self._is_url_proper(url):
             self.url: str = url.strip()
+        else:
+            self.url: str = url.strip().replace(' ', '+')
 
         self.url_params: ParseResult = urlparse(self.url)
         self._possible_characters = PatternCollector().chars
@@ -40,15 +42,16 @@ class FeatureExtraction:
             SpaceInUrlException: If the URL contains spaces between words.
         """
         url.strip()
+        # try:
         if ' ' in url:
-            raise SpaceInUrlException("URL cannot have space between words", url)
-
+            return False
+                # raise SpaceInUrlException("URL cannot have space between words", url)
+        # except SpaceInUrlException:
         return True
 
-    @staticmethod
-    def _extract_ip_address(url) -> str:
+    def _extract_ip_address(self, url) -> str:
         """Extract the IP address from the URL."""
-        return url.split('/')[2].lstrip('[').rstrip(']')
+        return str(self.url_params.netloc).lstrip('[').rstrip(']')
 
     def have_at_sign(self) -> bool:
         """Check if the URL contains the '@' symbol.
@@ -147,6 +150,14 @@ class FeatureExtraction:
             int: The number of dots in the netloc part of the URL.
         """
         return self.url_params.netloc.count('.')
+
+    def netloc_length(self) -> int:
+        """Count the netloc (domain) length.
+
+        Returns:
+            int: Netloc length.
+        """
+        return len(self.url_params.netloc)
 
     def have_shortening_patterns(self) -> bool:
         """Check if the URL matches any shortening service patterns.

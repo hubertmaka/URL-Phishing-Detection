@@ -1,3 +1,7 @@
+import datetime
+from typing import Callable
+
+
 class PatternCollector:
     """Collects patterns for feature extraction.
 
@@ -27,3 +31,7 @@ class PatternCollector:
         'chilp.it', 'nanoref.com', 'notlong.com', 'post.ly', 'xrl.us', 'url4.eu', 'virl.ws', 'migre.me',
         'buk.me', 'cuturls.com', 'fun.ly', 'snipurl.com', 'golinks.co', 'viralurl.biz', 'twurl.nl', 'merky.de'
     ]
+
+
+
+
