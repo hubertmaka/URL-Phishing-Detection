@@ -19,11 +19,24 @@ class FeatureExtraction:
         else:
             self.url: str = url.strip().replace(' ', '+')
 
-        self.url_params: ParseResult = urlparse(self.url)
+        self.url_params: ParseResult = self._load_params()
         self._possible_characters = PatternCollector().chars
         self._short_domains = PatternCollector().short_domains
         self._shortening_pattern = self._generate_shortening_regex()
+    
+    def _load_params(self) -> ParseResult:
+        """Load parameters from the urlparse and given URL.
 
+        Returns:
+            ParseResult: The parsed parts of URL
+        """
+        try:
+            params = urlparse(self.url)
+            return params
+        except ValueError:
+            return urlparse("")
+
+    
     def _generate_shortening_regex(self) -> str:
         """Generate a regular expression pattern for shortening services."""
         return f"https?://(www\.)?({'|'.join(self._short_domains)})"

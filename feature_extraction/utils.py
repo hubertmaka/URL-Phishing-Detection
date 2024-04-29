@@ -16,7 +16,8 @@ class PatternCollector:
         '{', '}', '[', ']', '~',
         '`', ':', ';', '|', '\\',
         ',', '.', '<', '>', '?',
-        '/', '+', '=', '-', '_'
+        '/', '+', '=', '-', '_',
+        "'", '"'
     ]
     short_domains = [
         'bit.ly', 'goo.gl', 'tinyurl.com', 't.co', 'ow.ly', 'is.gd', 'shorte.st', 'adf.ly',

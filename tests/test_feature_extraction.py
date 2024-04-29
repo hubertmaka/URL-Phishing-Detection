@@ -114,7 +114,8 @@ class TestFeatureExtraction(unittest.TestCase):
             '|': 0, '\\': 1, ',': 0,
             '.': 2, '<': 0, '>': 1,
             '?': 2, '/': 4, '+': 0,
-            '=': 1, '-': 1, '_': 0
+            '=': 1, '-': 1, '_': 0,
+            "'": 1, '"': 0
         }
         self.assertEqual(fe1.count_characters(), proper_result)
 
@@ -131,7 +132,8 @@ class TestFeatureExtraction(unittest.TestCase):
             '|': 0, '\\': 0, ',': 0,
             '.': 0, '<': 0, '>': 0,
             '?': 0, '/': 0, '+': 0,
-            '=': 0, '-': 0, '_': 0
+            '=': 0, '-': 0, '_': 0,
+            "'": 0, '"': 0
         }
         self.assertEqual(fe1.count_characters(), proper_result)
 
