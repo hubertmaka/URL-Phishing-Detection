@@ -77,9 +77,9 @@ class TestFeatureExtraction(unittest.TestCase):
         fe1 = fe.FeatureExtraction('https://abc.ddd.gfdsa/myfile/co')
         self.assertEqual(fe1.netloc_length(), 13)
 
-    def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenChangeSpacesToPluses(self):
-        """Test if creating an object with a URL containing spaces raises an exception."""
-        self.assertFalse(fe.FeatureExtraction._is_url_proper('https:// mysite.pl'))
+    # def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenChangeSpacesToPluses(self):
+    #     """Test if creating an object with a URL containing spaces raises an exception."""
+    #     self.assertFalse(fe.FeatureExtraction._is_url_proper('https:// mysite.pl'))
 
     def testGivenUrlWithSpaceBetweenWhenCreatingObjectThenReturnProperUrl(self):
         changed_url = fe.FeatureExtraction(
@@ -87,9 +87,9 @@ class TestFeatureExtraction(unittest.TestCase):
         proper_url = "https://'academiaquebramar.com.br/tmp/stgeorge+modified/stgeorge+modified/stgeorge.htm'"
         self.assertTrue(changed_url == proper_url)
 
-    def testGivenProperUrlWhenCreatingObjectThenReturnTrue(self):
-        """Test if creating an object with a proper URL returns True."""
-        self.assertTrue(fe.FeatureExtraction._is_url_proper('https://mysite.pl'))
+    # def testGivenProperUrlWhenCreatingObjectThenReturnTrue(self):
+    #     """Test if creating an object with a proper URL returns True."""
+    #     self.assertTrue(fe.FeatureExtraction._is_url_proper('https://mysite.pl'))
 
     def testGivenLongerUrlWhenCheckIfUrlLongerThanThresholdThenReturnTrue(self):
         """Test if a URL is longer than a specified threshold."""
@@ -169,7 +169,7 @@ class TestFeatureExtraction(unittest.TestCase):
 
     def testGivenUrlWhenAbnormalNoSchemaUrlThenReturnTrue(self):
         """Test if a URL without schema is considered abnormal."""
-        fe1 = fe.FeatureExtraction('://avc/index.php?option=com_')
+        fe1 = fe.FeatureExtraction('avc/index.php?option=com_')
         self.assertTrue(fe1.abnormal_url)
 
     def testGivenUrlWhenNotAbnormalThenReturnTrue(self):
@@ -217,6 +217,28 @@ class TestFeatureExtraction(unittest.TestCase):
         """Test if counting the number of dots in the netloc of a URL with no dots returns zero."""
         fe1 = fe.FeatureExtraction('https:///abc.com')
         self.assertEqual(fe1.dots_in_netloc(), 0)
+
+    def testGivenUrlWhenCountNetlocLengthThenReturnNetlocLength(self):
+        """Test if computing netloc length returns correct length."""
+        fe1 = fe.FeatureExtraction('https://www.google/abc')
+        self.assertEqual(fe1.netloc_length(), 10)
+
+    def testGivenUrlWithoutSchemeWhenCountNetlocLengthThenReturnNetlocLength(self):
+        """Test if computing netloc length returns correct length."""
+        fe1 = fe.FeatureExtraction('www.google/abc')
+        self.assertEqual(fe1.netloc_length(), 10)
+
+    def testGivenUrlWhenExtractUrlParamsThenReturnProperParams(self):
+        """Test checking property of extracted params."""
+        fe1 = fe.FeatureExtraction('http://www.google.com/abc')
+        extracted_params: list[str] = [fe1.url_params.scheme, fe1.url_params.netloc, fe1.url_params.path]
+        self.assertEqual(extracted_params, ['http', 'www.google.com', '/abc'])
+
+    def testGivenIPWhenExtractUrlParamsThenReturnProperParams(self):
+        """Test checking property of extracted params."""
+        fe1 = fe.FeatureExtraction('https://[2001:db8:85a3::8a2e:37:7334]/login.html')
+        extracted_params: list[str] = [fe1.url_params.scheme, fe1.url_params.netloc, fe1.url_params.path]
+        self.assertEqual(extracted_params, ['https', '[2001:db8:85a3::8a2e:37:7334]', '/login.html'])
 
     def testGivenShortDomainsWhenGenerateShortDomainsPatternThenReturnPattern(self):
         """Test if generating the pattern for short domains returns the correct pattern."""

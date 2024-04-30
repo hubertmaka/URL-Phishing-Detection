@@ -1,7 +1,6 @@
 import ipaddress
 import re
 from urllib.parse import urlparse, ParseResult
-from feature_extraction.exceptions import SpaceInUrlException
 from feature_extraction.utils import PatternCollector
 
 
@@ -14,10 +13,8 @@ class FeatureExtraction:
         Args:
             url (str): The URL to extract features from.
         """
-        if self._is_url_proper(url):
-            self.url: str = url.strip()
-        else:
-            self.url: str = url.strip().replace(' ', '+')
+
+        self.url: str = url.strip().replace(' ', '+')
 
         self.url_params: ParseResult = self._load_params()
         self._possible_characters = PatternCollector().chars
@@ -31,36 +28,17 @@ class FeatureExtraction:
             ParseResult: The parsed parts of URL
         """
         try:
-            params = urlparse(self.url)
-            return params
+            if re.match("https?://", self.url):
+                return urlparse(self.url)
+            else:
+                return urlparse("noscheme://" + self.url)
         except ValueError:
-            return urlparse("")
+            return urlparse(self.url.replace('[', '').replace(']', ''))
 
-    
+
     def _generate_shortening_regex(self) -> str:
         """Generate a regular expression pattern for shortening services."""
         return f"https?://(www\.)?({'|'.join(self._short_domains)})"
-
-    @staticmethod
-    def _is_url_proper(url: str) -> bool:
-        """Check if the URL is proper and does not contain spaces.
-
-        Args:
-            url (str): The URL to validate.
-
-        Returns:
-            bool: True if the URL is proper, False otherwise.
-
-        Raises:
-            SpaceInUrlException: If the URL contains spaces between words.
-        """
-        url.strip()
-        # try:
-        if ' ' in url:
-            return False
-                # raise SpaceInUrlException("URL cannot have space between words", url)
-        # except SpaceInUrlException:
-        return True
 
     def _extract_ip_address(self, url) -> str:
         """Extract the IP address from the URL."""
@@ -124,13 +102,16 @@ class FeatureExtraction:
 
     @property
     def abnormal_url(self) -> bool:
-        """Check if the URL is abnormal (missing scheme or netloc).
+        """Check if the URL is abnormal (missing scheme or netloc or have 0 letters in url).
 
         Returns:
             bool: True if the URL is abnormal, False otherwise.
         """
         netloc, scheme = self.url_params.netloc, self.url_params.scheme
-        return True if ((netloc == '') or (scheme == '')) else False
+        return True if ((netloc == '') or
+                        (scheme == 'noscheme') or
+                        (self.count_letters() == 0) or
+                        (self.dots_in_netloc() < 1)) else False
 
     def count_digits(self) -> int:
         """Count the number of digits in the URL.
