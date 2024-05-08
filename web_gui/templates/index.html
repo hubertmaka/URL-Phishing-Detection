@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>URL Checker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <form action="/submit" method="post">
+        <h1>Enter the URL you want to check:</h1>
+        <input type="text" name="url-input" placeholder="Enter the URL..." required>
+        <input type="submit" value="Check">
+        {% if url %}
+            <div class="result {{ 'phish-yes' if is_phish == True else 'phish-no' }}">
+                <h2 class="Entered URL">Entered URL:<br> {{ url }}</h2>
+                {% if is_phish == True %}
+                    <h2 class="result-text">POTENTIALLY PHISH URL</h2>
+                {% else %}
+                    <h2 class="result-text">POTENTIALLY SAFE URL</h2>
+                {% endif %}
+
+            </div>
+        {% endif %}
+    </form>
+</body>
+</html>
+

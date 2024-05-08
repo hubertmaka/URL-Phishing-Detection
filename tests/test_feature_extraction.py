@@ -287,3 +287,34 @@ class TestFeatureExtraction(unittest.TestCase):
         fe1 = fe.FeatureExtraction('https://code.jquery.com/jquery-3alert("Hello")')
         self.assertFalse(fe1.have_javascript_code())
 
+    def testGivenNetlocWhenWWWInNetlocThenReturnTrue(self):
+        fe1 = fe.FeatureExtraction('https://www.python.org/')
+        self.assertTrue(fe1.have_www_in_netloc())
+
+    def testGivenNetlocWhenWWWNotInNetlocThenReturnFalse(self):
+        fe1 = fe.FeatureExtraction('https://wwwpython.org')
+        self.assertFalse(fe1.have_www_in_netloc())
+
+    def testGivenPathWhenOnlyOneSlashInThenReturnUrlWithoutPathSlash(self):
+        fe1 = fe.FeatureExtraction('https://wwwpython.org/')
+        self.assertEqual(fe1._reduce_empty_path(), 'https://wwwpython.org')
+
+    def testGivenPathWhenNotOnlyOneSlashInThenReturnUrlWithoutPathSlash(self):
+        fe1 = fe.FeatureExtraction('https://www.python.org/abc/')
+        self.assertEqual(fe1._reduce_empty_path(), 'https://www.python.org/abc/')
+
+    def testGivenUrlWhenOnlyOneSlashInThenReturnUrlWithoutPathSlash(self):
+        fe1 = fe.FeatureExtraction('https://wwwpython.org/')
+        self.assertEqual(fe1.url, 'https://wwwpython.org')
+
+    def testGivenUrlWhenCountSlashesThenReturnProperVal(self):
+        fe1 = fe.FeatureExtraction('https://wwwpython.org/')
+        self.assertEqual(fe1.count_slashes_in_path(), 0)
+
+    def testGivenUrlWhenCountSlashesThenReturnProperValNotZero(self):
+        fe1 = fe.FeatureExtraction('https://wwwpython.org/abc/gg//')
+        self.assertEqual(fe1.count_slashes_in_path(), 4)
+
+    def testGivenUrlWhenCountWordsIn3WordsNetlocThenReturnThreeValue(self):
+        fe1 = fe.FeatureExtraction('https://www.youtube.com/watch?v=')
+        self.assertEqual(fe1.count_words_in_netloc(), 3)

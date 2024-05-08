@@ -15,12 +15,12 @@ class FeatureExtraction:
         """
 
         self.url: str = url.strip().replace(' ', '+')
-
+        self.url = self._reduce_empty_path()
         self.url_params: ParseResult = self._load_params()
         self._possible_characters = PatternCollector().chars
         self._short_domains = PatternCollector().short_domains
         self._shortening_pattern = self._generate_shortening_regex()
-    
+
     def _load_params(self) -> ParseResult:
         """Load parameters from the urlparse and given URL.
 
@@ -35,6 +35,14 @@ class FeatureExtraction:
         except ValueError:
             return urlparse(self.url.replace('[', '').replace(']', ''))
 
+
+    def _reduce_empty_path(self):
+        """Reduce the / from url when the path contains only /.
+
+        Returns:
+            str: The reduced url or the original.
+        """
+        return self.url[:-1] if (self._load_params().path == '/' and self.url.endswith('/')) else self.url
 
     def _generate_shortening_regex(self) -> str:
         """Generate a regular expression pattern for shortening services."""
@@ -168,3 +176,35 @@ class FeatureExtraction:
             bool: True if the URL contains JavaScript code, False otherwise.
         """
         return True if bool(re.findall(re.compile('<script>'), self.url)) else False
+
+    def have_www_in_netloc(self) -> bool:
+        """Check if in the netloc is www prefix.
+
+        Returns:
+            bool: True if the Netloc contains www prefix, False otherwise.
+        """
+        return True if self.url_params.netloc.startswith('www.') else False
+
+    def in_top_100(self) -> bool:
+        """Check if the netloc is in top 100 popular domains.
+
+        Returns:
+            bool: True if the netloc is in top 100 popular domains, False otherwise.
+        """
+        return True if (self.url_params.netloc in PatternCollector.top_100_urls) else False
+
+    def count_slashes_in_path(self) -> int:
+        """Count the number of slashes in path in the URL.
+
+        Returns:
+             int: Number of slashes in path.
+        """
+        return self.url_params.path.count('/')
+
+    def count_words_in_netloc(self) -> int:
+        """Count the number of words in netloc.
+
+        Return: Number of words in netloc.
+        """
+        return len(self.url_params.netloc.split('.'))
+    # TODO: Dorobić funkcję która policzy ilość / w ścieżce. oraz ilość słów w domenie. Oraz może dodać kilka modeli i zobaczyć który co wykryje jak najlepiej.
