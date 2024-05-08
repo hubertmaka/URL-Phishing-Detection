@@ -1,6 +1,3 @@
-import datetime
-from typing import Callable
-
 
 class PatternCollector:
     """Collects patterns for feature extraction.
