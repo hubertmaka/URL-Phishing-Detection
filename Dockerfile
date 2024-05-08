@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY ./web_gui ./web_gui
 COPY ./feature_extraction ./feature_extraction
-COPY model/model.py ./saved_models/model.py
+COPY model/model.py ./model/model.py
 COPY requirements_app.txt .
 
 RUN pip install -r reqirements_app.txt
