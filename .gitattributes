@@ -1,1 +1,1 @@
-saved_models/random_forest_model filter=lfs diff=lfs merge=lfs -text
+web_gui/static/random_forest_model.pkl filter=lfs diff=lfs merge=lfs -text
