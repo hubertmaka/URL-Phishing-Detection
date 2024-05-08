@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from saved_models.model import Model
+from model.model import Model
 import os
 
 app = Flask(__name__)

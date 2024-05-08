@@ -11,6 +11,9 @@ datasets/urldata_ewentualność.csv
 # Chromedriver
 automation_utils/chromedriver.exe
 
+# MODELS
+
+
 # Distribution / packaging
 .Python
 build/
