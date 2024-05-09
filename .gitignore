@@ -12,7 +12,6 @@ datasets/urldata_ewentualność.csv
 automation_utils/chromedriver.exe
 
 # MODELS
-saved_models/
 
 # Distribution / packaging
 .Python

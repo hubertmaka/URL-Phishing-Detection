@@ -20,14 +20,16 @@ def submit():
 
 def make_prediction(url):
     is_phish = None
+    model_rand = Model(url, os.path.join('static', 'rf_model_random.pkl'))
     model = Model(url, os.path.join('static', 'best_model_rf.pkl'))
     prediction: float = model.predict()
+    prediction_rand: float = model_rand.predict()
     if prediction[0] == 1:
         is_phish = True
     elif prediction[0] == 0:
         is_phish = False
     print(prediction[0])
-    print(model.predict_proba())
+    print(prediction_rand)
     return is_phish
 
 
