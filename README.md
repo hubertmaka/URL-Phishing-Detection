@@ -39,3 +39,12 @@ The final product will be a model (function) that takes a hyperlink as input and
 ## Supervision
 
 **Scientific Supervisor:** Dr hab. inż. Marek Natkaniec
+
+
+
+## Working app presentation
+![441347534_330490819802526_5848509598242305276_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/37ba872c-1265-46b6-bc7f-5dc3a7869b91)
+![441356193_318090451159841_1300915513481240175_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/78381f0b-f3e1-4e9b-96fc-fd719760f1e7)
+![438154397_3670438616562946_2596983184235359901_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/bf33001e-d43e-4fd5-affe-f19ee6352dcd)
+![438137466_1250845749282134_4393840316458161091_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/82505566-d44f-483f-9f8d-ad501e9aa2a9)
+![441330990_983954659939323_3844051740745810224_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/54226b0c-0735-4d15-8e4c-8cfe3bf259c9)
