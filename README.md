@@ -40,7 +40,9 @@ The final product will be a model (function) that takes a hyperlink as input and
 
 **Scientific Supervisor:** Dr hab. inż. Marek Natkaniec
 
-
+<br />
+<br />
+<br />
 
 ## Working app presentation
 ![441347534_330490819802526_5848509598242305276_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/37ba872c-1265-46b6-bc7f-5dc3a7869b91)
