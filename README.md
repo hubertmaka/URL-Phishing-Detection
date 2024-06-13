@@ -41,10 +41,8 @@ The final product will be a model (function) that takes a hyperlink as input and
 **Scientific Supervisor:** Dr hab. inż. Marek Natkaniec
 
 <br />
-<br />
-<br />
 
-### How To Run:
+## How To Run:
 - Clone repository with `git clone` command
 - Enter to cloned repo directory: `cd ./URL-Phishing-Detection`
 - Create virtual environment to install Python dependencies: `python3 -m venv .venv`
@@ -55,6 +53,8 @@ The final product will be a model (function) that takes a hyperlink as input and
 - Run Web GUI: `python3 ./web_guit/app.py`
 - Enter the localhost: `http://127:0.0.1:9999`
 - Or run any other Jupyer Notebook to train models or analize data on your own
+
+<br />
 
 ## Working app presentation
 ![441347534_330490819802526_5848509598242305276_n](https://github.com/hubertmaka/URL-Phishing-Detection/assets/121463460/37ba872c-1265-46b6-bc7f-5dc3a7869b91)
